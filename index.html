@@ -836,6 +836,147 @@
 }
 .hack-complete-msg.show { display: block; }
 
+/* ── CORAZONES VOLADORES ── */
+.heart-particle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 99999;
+    font-size: 2rem;
+    animation: heartFly linear forwards;
+    will-change: transform, opacity;
+    user-select: none;
+}
+@keyframes heartFly {
+    0%   { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
+    70%  { opacity: 1; }
+    100% { transform: translateY(-60vh) scale(1.6) rotate(20deg); opacity: 0; }
+}
+
+/* ── TARJETA ILOVEYOU ── */
+#iloveyouCard {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 99998;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,.82);
+    backdrop-filter: blur(5px);
+    padding: 1rem;
+}
+#iloveyouCard.show { display: flex; }
+#iloveyouCard.fade-out {
+    animation: cardFadeOut 2s forwards;
+}
+@keyframes cardFadeOut {
+    0%   { opacity: 1; }
+    100% { opacity: 0; pointer-events: none; }
+}
+.iloveyou-inner {
+    background: #000;
+    border: 3px solid #ff33cc;
+    border-radius: 12px;
+    padding: 2rem 2.2rem;
+    max-width: 680px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 0 50px #ff33cc66, 0 0 100px #ff006633;
+    position: relative;
+    overflow: hidden;
+    animation: cardPop .4s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes cardPop {
+    from { transform: scale(.6); opacity: 0; }
+    to   { transform: scale(1);  opacity: 1; }
+}
+.iloveyou-inner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(0deg,
+        transparent 0, transparent 3px,
+        rgba(255,51,204,.04) 3px, rgba(255,51,204,.04) 4px);
+    pointer-events: none;
+}
+.iloveyou-title {
+    font-family: 'Press Start 2P', cursive;
+    font-size: clamp(.75rem, 2.5vw, 1.3rem);
+    color: #ff33cc;
+    text-shadow: 0 0 18px #ff33cc;
+    margin-bottom: 1rem;
+    letter-spacing: 2px;
+    line-height: 1.6;
+}
+.iloveyou-sub {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(.65rem, 1.8vw, .92rem);
+    color: #00ff99;
+    margin-bottom: 1.4rem;
+    letter-spacing: 1px;
+}
+.iloveyou-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: .8rem;
+    margin: 1.2rem 0;
+}
+.iloveyou-stat {
+    background: #001a00;
+    border: 1px solid #00ff9955;
+    border-radius: 6px;
+    padding: .7rem .5rem;
+}
+.iloveyou-stat .stat-val {
+    font-family: 'Press Start 2P', cursive;
+    font-size: clamp(.6rem, 1.8vw, .85rem);
+    color: #ff33cc;
+    text-shadow: 0 0 8px #ff33cc;
+    display: block;
+    margin-bottom: .3rem;
+}
+.iloveyou-stat .stat-lbl {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: .68rem;
+    color: #00ff9988;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+.iloveyou-desc {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(.63rem, 1.6vw, .82rem);
+    color: #ccc;
+    line-height: 1.7;
+    background: #050505;
+    border: 1px solid #ff33cc44;
+    border-radius: 6px;
+    padding: .9rem 1rem;
+    text-align: left;
+    margin-top: .8rem;
+}
+.iloveyou-desc strong { color: #ff33cc; }
+.iloveyou-timer {
+    font-family: 'Press Start 2P', cursive;
+    font-size: .6rem;
+    color: #ffffff55;
+    margin-top: 1rem;
+    letter-spacing: 1px;
+}
+.iloveyou-timer span { color: #ff33cc; }
+.iloveyou-close {
+    position: absolute;
+    top: 10px; right: 12px;
+    background: none;
+    border: 1px solid #ff33cc55;
+    color: #ff33cc88;
+    font-size: .8rem;
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 3px 8px;
+    font-family: 'Share Tech Mono', monospace;
+    transition: all .2s;
+}
+.iloveyou-close:hover { color: #ff33cc; border-color: #ff33cc; }
+
 /* ── SCANLINE extra ── */
 .virus-box .scanline {
     position: absolute;
@@ -882,6 +1023,58 @@
     <!-- MENSAJE FINAL -->
     <div class="hack-complete-msg" id="hackMsg">
         ☠ SISTEMA COMPROMETIDO · MOTHERSHIP DOWN ☠
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- TARJETA ILOVEYOU — aparece tras los corazones -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="iloveyouCard">
+    <div class="iloveyou-inner">
+        <button class="iloveyou-close" onclick="closeIloveyou()">✕ cerrar</button>
+
+        <div class="iloveyou-title">
+            💌 I LOVE YOU 💌<br>
+            <span style="font-size:.7em;color:#00ff99;">EL VIRUS MÁS ROMÁNTICO DE LA HISTORIA</span>
+        </div>
+
+        <div class="iloveyou-sub">
+            ⚠ ALERTA DE SEGURIDAD HISTÓRICA · REGISTRO DE INFECCIÓN ⚠
+        </div>
+
+        <div class="iloveyou-grid">
+            <div class="iloveyou-stat">
+                <span class="stat-val">2000</span>
+                <span class="stat-lbl">📅 Año de creación</span>
+            </div>
+            <div class="iloveyou-stat">
+                <span class="stat-val">~50M</span>
+                <span class="stat-lbl">💻 PCs infectadas</span>
+            </div>
+            <div class="iloveyou-stat">
+                <span class="stat-val">$10B</span>
+                <span class="stat-lbl">💸 Daños estimados</span>
+            </div>
+            <div class="iloveyou-stat">
+                <span class="stat-val">10 días</span>
+                <span class="stat-lbl">⏱ Para propagarse</span>
+            </div>
+        </div>
+
+        <div class="iloveyou-desc">
+            <strong>👨‍💻 Creador:</strong> Onel de Guzman, estudiante de informática de Filipinas (Manila), 24 años.<br><br>
+            <strong>📧 ¿Cómo funcionaba?</strong> Llegaba como un correo electrónico con el asunto <strong>"ILOVEYOU"</strong> y un archivo adjunto llamado <em>LOVE-LETTER-FOR-YOU.txt.vbs</em>. Al abrirlo, el script de Visual Basic se ejecutaba y hacía lo siguiente:<br><br>
+            &nbsp;&nbsp;• Sobreescribía archivos de imágenes, música y documentos con copias del propio virus.<br>
+            &nbsp;&nbsp;• Se reenviaba automáticamente a <strong>todos los contactos</strong> del Outlook de la víctima.<br>
+            &nbsp;&nbsp;• Robaba contraseñas de internet y las enviaba a un servidor en Filipinas.<br>
+            &nbsp;&nbsp;• Se replicaba en carpetas compartidas de red, infectando redes enteras.<br><br>
+            <strong>🌍 Impacto:</strong> En menos de 10 días infectó más de <strong>50 millones de computadoras</strong> en todo el mundo — el 10% de las PCs conectadas a internet en esa época. Afectó al Pentágono, la NASA, el Parlamento Británico y corporaciones gigantes como Ford y AT&T.<br><br>
+            <strong>⚖️ ¿Fue castigado?</strong> No. En Filipinas no existía en ese entonces una ley de delitos informáticos, por lo que Onel de Guzman no pudo ser procesado. Su caso impulsó la creación de leyes de ciberseguridad en todo el mundo.
+        </div>
+
+        <div class="iloveyou-timer" id="iloveyouTimer">
+            Cerrando en <span id="iloveyouCountdown">40</span> segundos...
+        </div>
     </div>
 </div>
 
@@ -985,6 +1178,8 @@
                 getMsgEl().classList.add('show');
                 getBtnEl().disabled = false;
                 getBtnEl().textContent = '↺ REINICIAR';
+                // 🎉 Lanzar corazones y luego mostrar tarjeta ILOVEYOU
+                launchHearts();
                 return;
             }
 
@@ -1011,6 +1206,96 @@
             el.style.opacity = idleFrame === 0 ? '1' : '0.85';
         }
     }, 900);
+
+    // ══════════════════════════════════════════════
+    // 💌 CORAZONES + TARJETA ILOVEYOU
+    // ══════════════════════════════════════════════
+    var heartEmojis = ['❤️','💖','💗','💓','💞','💕','💝','🩷','♥️','💘'];
+    var heartTimers = [];
+
+    function spawnHeart() {
+        var el = document.createElement('div');
+        el.className = 'heart-particle';
+        el.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+
+        // Random position across full viewport
+        var startX = Math.random() * 100;  // vw %
+        var startY = 60 + Math.random() * 40; // bottom 40% of screen
+        var size   = 1.4 + Math.random() * 2.2;  // 1.4–3.6rem
+        var dur    = 2.2 + Math.random() * 2.8;  // 2.2–5s
+
+        el.style.cssText = [
+            'left:' + startX + 'vw',
+            'top:' + startY + 'vh',
+            'font-size:' + size + 'rem',
+            'animation-duration:' + dur + 's',
+            'animation-delay:' + (Math.random() * 0.6) + 's',
+        ].join(';');
+
+        document.body.appendChild(el);
+
+        // Remove from DOM after animation
+        setTimeout(function() {
+            if(el.parentNode) el.parentNode.removeChild(el);
+        }, (dur + 0.8) * 1000);
+    }
+
+    function launchHearts() {
+        // Phase 1: Lluvia de corazones por 4 segundos
+        var total = 0;
+        var maxHearts = 80;
+        var spawnInterval = setInterval(function() {
+            spawnHeart();
+            spawnHeart(); // 2 per tick
+            total += 2;
+            if(total >= maxHearts) clearInterval(spawnInterval);
+        }, 100);
+
+        heartTimers.push(spawnInterval);
+
+        // Phase 2: Mostrar tarjeta ILOVEYOU después de 3.5s (mientras aún caen algunos corazones)
+        var cardTimer = setTimeout(function() {
+            showIloveyouCard();
+        }, 3500);
+        heartTimers.push(cardTimer);
+    }
+
+    var iloveyouCountdownTimer = null;
+
+    function showIloveyouCard() {
+        var card = document.getElementById('iloveyouCard');
+        if(!card) return;
+        card.classList.add('show');
+        card.classList.remove('fade-out');
+
+        var seconds = 40;
+        var cdEl = document.getElementById('iloveyouCountdown');
+
+        iloveyouCountdownTimer = setInterval(function() {
+            seconds--;
+            if(cdEl) cdEl.textContent = seconds;
+            if(seconds <= 0) {
+                clearInterval(iloveyouCountdownTimer);
+                fadeOutIloveyou();
+            }
+        }, 1000);
+    }
+
+    function fadeOutIloveyou() {
+        var card = document.getElementById('iloveyouCard');
+        if(!card) return;
+        card.classList.add('fade-out');
+        setTimeout(function() {
+            card.classList.remove('show');
+            card.classList.remove('fade-out');
+        }, 2100);
+    }
+
+    window.closeIloveyou = function() {
+        clearInterval(iloveyouCountdownTimer);
+        fadeOutIloveyou();
+    };
+
 })();
 </script>
             </section>
